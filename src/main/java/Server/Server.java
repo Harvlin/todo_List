@@ -50,6 +50,7 @@ public class Server {
                         System.out.println("Received" + request);
                         String response = requestHandler(request, connection);
                         System.out.println(response);
+                        out.println(response);
                     }
                 }
             } catch (SQLException | ClassNotFoundException | IOException e) {
@@ -70,7 +71,7 @@ public class Server {
 
             switch (command) {
                 case "add":
-                    String[] parameters = argument.split(", ", 2);
+                    String[] parameters = argument.split(",", 2);
                     return addTask(connection, nickname, parameters[0], parameters[1]);
                 case "list":
                     return listTask(connection);
@@ -150,7 +151,7 @@ public class Server {
         }
 
         private boolean authenticateUser(BufferedReader in, PrintWriter out, Connection connection) throws IOException, SQLException {
-            out.println("Nickname: ");
+            out.println("Nickname: "); out.flush();
             nickname = in.readLine();
 
             String query = "SELECT * FROM users WHERE username = ?";
@@ -158,15 +159,15 @@ public class Server {
                 preparedStatement.setString(1, nickname);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (!resultSet.next()) {
-                        out.println("User doesn't exist");
+                        out.println("User doesn't exist"); out.flush();
                         registerUser(in, out, connection);
-                        out.println("You can now log in");
+                        out.println("You can now log in"); out.flush();
                         return false;
                     } else {
-                        out.println("Enter your password");
+                        out.println("Enter your password: ");
                         String password = in.readLine();
                         if (!password.equals(resultSet.getString("password"))) {
-                            out.println("Wrong password");
+                            out.println("Wrong password"); out.flush();
                             return false;
                         }
                         return true;
@@ -176,7 +177,7 @@ public class Server {
         }
 
         private void registerUser(BufferedReader in, PrintWriter out, Connection connection) throws SQLException, IOException{
-            out.println("Enter a password");
+            out.println("Enter a password: "); out.flush();
             String password = in.readLine();
 
             String query = "INSERT INTO users (username, password) VALUES (?, ?)";
