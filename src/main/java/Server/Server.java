@@ -88,7 +88,7 @@ public class Server {
             String query;
             PreparedStatement preparedStatement;
 
-            if (isNumeric(identifier) /* Return true if identifier is String */) {
+            if (isNumeric(identifier)) {
                 query = "DELETE FROM tasks WHERE id = ? AND owner = ?";
                 preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setInt(1, Integer.parseInt(identifier));
@@ -107,7 +107,7 @@ public class Server {
             String query;
             PreparedStatement preparedStatement;
 
-            if (isNumeric(identifier) /* Return true if identifier is String */) {
+            if (isNumeric(identifier)) {
                 query = "UPDATE tasks SET completed = 1 WHERE id = ? AND owner = ? AND completed = 0";
                 preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setInt(1, Integer.parseInt(identifier));
@@ -188,7 +188,7 @@ public class Server {
             }
         }
 
-        private boolean isNumeric(String txt) {
+        private boolean isNumeric(String txt) { // this method return true if identifier is string
             try {
                 Integer.parseInt(txt);
                 return true;

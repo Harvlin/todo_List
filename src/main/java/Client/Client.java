@@ -9,8 +9,6 @@ import java.net.Socket;
 public class Client {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 8080;
-    private static String username;
-    private static String password;
     static String title, task;
 
     public static void main(String[] args) {
@@ -83,6 +81,8 @@ public class Client {
     }
 
     private static void authenticateUser(BufferedReader in, PrintWriter out, BufferedReader consoleInput) throws IOException {
+        String username;
+        String password;
         System.out.println(in.readLine());
         if (in.readLine().equals("Nickname: ")) {
             System.out.println(in.readLine());
